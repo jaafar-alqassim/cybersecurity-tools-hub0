@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="color-scheme:dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Tools Hub</title>
+    <script>
+        const t = localStorage.getItem('theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ── RESET & TOKENS ─────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:         #0d1117;
+            --bg-card:    #161b22;
+            --bg-surface: #21262d;
+            --text-1:     #e6edf3;
+            --text-2:     #8b949e;
+            --text-3:     #484f58;
+            --accent:     #58a6ff;
+            --border:     #30363d;
+            --sh:         0 4px 20px rgba(0,0,0,.45);
+        }
+        [data-theme="light"] {
+            --bg:         #f6f8fa;
+            --bg-card:    #ffffff;
+            --bg-surface: #eaeef2;
+            --text-1:     #1f2328;
+            --text-2:     #57606a;
+            --text-3:     #8c959f;
+            --accent:     #0969da;
+            --border:     #d0d7de;
+            --sh:         0 4px 20px rgba(0,0,0,.12);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            min-height: 100vh;
+            transition: background .3s, color .3s;
+        }
+
+        /* ── HEADER ─────────────────────────────────────────── */
+        .site-header {
+            background: linear-gradient(160deg, #0d1117 0%, #0e1d2e 60%, #0d1929 100%);
+            border-bottom: 1px solid rgba(56,139,253,.18);
+            padding: 58px 24px 74px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* grid overlay */
+        .site-header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(56,139,253,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56,139,253,.05) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+        }
+        /* glow */
+        .site-header::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 55% at 50% 110%, rgba(56,139,253,.14) 0%, transparent 75%);
+            pointer-events: none;
+        }
+        .hdr-inner {
+            position: relative; z-index: 1;
+            max-width: 700px; margin: 0 auto;
+        }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(56,139,253,.12);
+            border: 1px solid rgba(56,139,253,.28);
+            color: #79c0ff;
+            font-size: .72rem; font-weight: 600;
+            letter-spacing: .09em; text-transform: uppercase;
+            padding: 5px 16px; border-radius: 999px; margin-bottom: 22px;
+        }
+        .site-title {
+            font-size: clamp(1.9rem, 5vw, 3.4rem);
+            font-weight: 800; color: #e6edf3;
+            line-height: 1.1; letter-spacing: -.8px; margin-bottom: 16px;
+        }
+        .site-title em {
+            font-style: normal;
+            background: linear-gradient(90deg, #58a6ff 0%, #a5d6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .site-sub {
+            color: #8b949e; font-size: .97rem;
+            line-height: 1.65; margin-bottom: 30px;
+        }
+        .stats-row {
+            display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+        }
+        .stat-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(56,139,253,.1);
+            border: 1px solid rgba(56,139,253,.24);
+            color: #79c0ff;
+            padding: 6px 16px; border-radius: 999px;
+            font-size: .78rem; font-weight: 600;
+        }
+        /* ── THEME BUTTON ───────────────────────────────────── */
+        .theme-btn {
+            position: absolute; top: 18px; right: 18px; z-index: 10;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 18px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,.15);
+            background: rgba(255,255,255,.07);
+            color: #e6edf3;
+            font-family: inherit; font-size: .83rem; font-weight: 500;
+            cursor: pointer;
+            transition: background .2s, border-color .2s;
+            backdrop-filter: blur(6px);
+        }
+        .theme-btn:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); }
+
+        /* ── BRAND ──────────────────────────────────────────── */
+        .brand {
+            position: absolute; top: 18px; left: 18px; z-index: 10;
+            display: inline-flex; align-items: center; gap: 9px;
+            text-decoration: none;
+        }
+        .brand-name {
+            font-size: .88rem; font-weight: 800;
+            letter-spacing: .06em; color: #e6edf3;
+            background: linear-gradient(90deg, #58a6ff, #a5d6ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .brand-insta {
+            display: flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 7px;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: #fff; font-size: .72rem;
+            text-decoration: none;
+            transition: transform .2s, opacity .2s;
+        }
+        .brand-insta:hover { transform: scale(1.12); opacity: .9; }
+
+        /* ── FOOTER ─────────────────────────────────────────── */
+        .footer-credit {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; margin-top: 8px; font-size: .8rem; color: var(--text-3);
+        }
+        .footer-credit strong { color: var(--text-2); font-weight: 700; }
+        .footer-credit .fi {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 20px; height: 20px; border-radius: 5px;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: #fff; font-size: .6rem; text-decoration: none;
+            transition: transform .2s;
+        }
+        .footer-credit .fi:hover { transform: scale(1.15); }
+
+        /* ── MAIN ────────────────────────────────────────────── */
+        main {
+            max-width: 1320px; margin: -34px auto 0;
+            padding: 0 18px 80px;
+            position: relative; z-index: 2;
+        }
+
+        /* ── SEARCH ─────────────────────────────────────────── */
+        .search-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0 18px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--sh); margin-bottom: 38px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: var(--sh), 0 0 0 3px rgba(88,166,255,.13);
+        }
+        .s-ico { color: var(--text-3); font-size: .95rem; flex-shrink: 0; }
+        #searchInput {
+            flex: 1; padding: 17px 0;
+            background: none; border: none; outline: none;
+            font-family: inherit; font-size: .95rem; color: var(--text-1);
+        }
+        #searchInput::placeholder { color: var(--text-3); }
+        #clearBtn {
+            display: none; background: none; border: none;
+            color: var(--text-3); cursor: pointer;
+            padding: 4px 7px; border-radius: 5px; font-size: .88rem;
+            transition: color .2s;
+        }
+        #clearBtn:hover { color: var(--text-1); }
+
+        /* ── CATEGORY SECTION ───────────────────────────────── */
+        .cat-sec {
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: rise .45s ease forwards;
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .cat-hdr {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 18px;
+        }
+        .cat-ico {
+            width: 36px; height: 36px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .88rem; flex-shrink: 0;
+        }
+        .cat-label { font-size: 1.05rem; font-weight: 700; color: var(--text-1); }
+        .cat-line { flex: 1; height: 1px; background: var(--border); margin: 0 6px; }
+        .cat-badge {
+            font-size: .7rem; font-weight: 600; color: var(--text-2);
+            background: var(--bg-surface); border: 1px solid var(--border);
+            padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+        }
+
+        /* ── GRID ────────────────────────────────────────────── */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+            gap: 14px;
+        }
+
+        /* ── CARD ────────────────────────────────────────────── */
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex; flex-direction: column; gap: 13px;
+            position: relative; overflow: hidden;
+            opacity: 0; animation: rise .45s ease forwards;
+            transition: transform .22s, border-color .22s, box-shadow .22s;
+            cursor: default;
+        }
+        /* colored top stripe */
+        .tool-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 2.5px; background: var(--c);
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--c);
+            box-shadow: 0 12px 32px rgba(0,0,0,.3), 0 0 0 1px var(--c);
+        }
+        .card-head { display: flex; align-items: flex-start; gap: 14px; }
+        .t-ico {
+            width: 46px; height: 46px; border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .t-name {
+            font-size: 1rem; font-weight: 700; color: var(--text-1);
+            line-height: 1.25; padding-top: 2px;
+        }
+        .t-tag {
+            display: inline-block; margin-top: 5px;
+            font-size: .66rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 5px; border: 1px solid;
+        }
+        .t-desc {
+            font-size: .875rem; color: var(--text-2);
+            line-height: 1.65; flex: 1;
+        }
+        .t-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--c); color: #fff; text-decoration: none;
+            padding: 9px 18px; border-radius: 8px;
+            font-size: .82rem; font-weight: 600; letter-spacing: .01em;
+            align-self: flex-start;
+            transition: filter .2s, transform .2s;
+        }
+        .t-link:hover { filter: brightness(1.2); transform: translateX(3px); }
+
+        /* ── NO RESULTS ─────────────────────────────────────── */
+        #noResults { display: none; text-align: center; padding: 80px 20px; }
+        #noResults.show { display: block; }
+        #noResults i { font-size: 2.8rem; color: var(--text-3); margin-bottom: 16px; display: block; }
+        #noResults h3 { font-size: 1.2rem; color: var(--text-2); margin-bottom: 8px; }
+        #noResults p { color: var(--text-3); font-size: .9rem; }
+        #noResults button {
+            background: none; border: none;
+            color: var(--accent); cursor: pointer; font-size: inherit; padding: 0;
+        }
+
+        /* ── FOOTER ─────────────────────────────────────────── */
+        footer {
+            text-align: center; padding: 26px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-3); font-size: .82rem;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ── RESPONSIVE ─────────────────────────────────────── */
+        @media (max-width: 580px) {
+            .site-header { padding: 44px 16px 56px; }
+            .theme-btn .btn-lbl { display: none; }
+            main { padding: 0 12px 60px; }
+            .tool-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 581px) and (max-width: 880px) {
+            .tool-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="site-header">
+    <a class="brand" href="https://www.instagram.com/cyberj.io/" target="_blank" rel="noopener noreferrer">
+        <span class="brand-name">CYBERJ.IO</span>
+        <span class="brand-insta"><i class="fab fa-instagram"></i></span>
+    </a>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+        <i class="fas fa-sun" id="themeIco"></i>
+        <span class="btn-lbl" id="themeLbl">Light Mode</span>
+    </button>
+    <div class="hdr-inner">
+        <div class="eyebrow">
+            <i class="fas fa-shield-halved"></i> Professional Security Toolkit
+        </div>
+        <h1 class="site-title">🛡️ Cyber Security <em>Tools Hub</em></h1>
+        <p class="site-sub">
+            Your centralized gateway to the most powerful cybersecurity tools.<br>
+            Official links, concise descriptions, and clear categories — all in one place.
+        </p>
+        <div class="stats-row">
+            <span class="stat-pill"><i class="fas fa-toolbox"></i>&thinsp;<b id="sTool">14</b>&thinsp;Tools</span>
+            <span class="stat-pill"><i class="fas fa-layer-group"></i>&thinsp;<b id="sCat">8</b>&thinsp;Categories</span>
+            <span class="stat-pill"><i class="fas fa-circle-check"></i>&thinsp;Official Links Only</span>
+        </div>
+    </div>
+</header>
+
+<!-- ══ MAIN ════════════════════════════════════════════════ -->
+<main>
+    <div class="search-box">
+        <i class="fas fa-magnifying-glass s-ico"></i>
+        <input id="searchInput" type="text"
+               placeholder="Search by tool name, category, or keyword…"
+               autocomplete="off" oninput="doSearch(this.value)">
+        <button id="clearBtn" onclick="clearSearch()" title="Clear search">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+
+    <div id="container"></div>
+
+    <div id="noResults">
+        <i class="fas fa-magnifying-glass"></i>
+        <h3>No tools found</h3>
+        <p>Try a different keyword or
+            <button onclick="clearSearch()">clear the search</button>.
+        </p>
+    </div>
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+    🛡️ Cyber Security Tools Hub &mdash; All links lead to official websites &mdash;
+    <a href="#" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'})">↑ Back to top</a>
+    <div class="footer-credit">
+        Designed by <strong>CYBERJ.IO</strong>
+        <a class="fi" href="https://www.instagram.com/cyberj.io/" target="_blank" rel="noopener noreferrer" title="@cyberj.io">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════ */
+const DATA = [
+    /* ── 1. Network Scanning & Analysis ─────────────────── */
+    {
+        name: "Network Scanning & Analysis",
+        icon: "fa-network-wired",
+        color: "#38bdf8",
+        tools: [
+            {
+                name: "Nmap",
+                icon: "fa-satellite-dish",
+                tag:  "Network Scanner",
+                desc: "Powerful network discovery and security auditing tool for mapping open ports, running services, and operating systems across any network.",
+                url:  "https://nmap.org/",
+            },
+            {
+                name: "Wireshark",
+                icon: "fa-fish",
+                tag:  "Packet Analyzer",
+                desc: "Industry-standard network protocol analyzer for capturing and interactively browsing live traffic across hundreds of network types.",
+                url:  "https://www.wireshark.org/",
+            }
+        ]
+    },
+    /* ── 2. Web Application Testing ─────────────────────── */
+    {
+        name: "Web Application Testing",
+        icon: "fa-globe",
+        color: "#a78bfa",
+        tools: [
+            {
+                name: "Burp Suite",
+                icon: "fa-bug",
+                tag:  "Web Security",
+                desc: "Leading integrated platform and web vulnerability scanner with an intercepting proxy for comprehensive web application security testing.",
+                url:  "https://portswigger.net/burp",
+            },
+            {
+                name: "OWASP ZAP",
+                icon: "fa-shield-halved",
+                tag:  "Web Scanner",
+                desc: "Open-source web application security scanner for finding vulnerabilities during development, testing, and CI/CD pipeline stages.",
+                url:  "https://www.zaproxy.org/",
+            },
+            {
+                name: "SQLmap",
+                icon: "fa-database",
+                tag:  "SQL Injection",
+                desc: "Automated open-source tool for detecting and exploiting SQL injection flaws and taking over database servers in web applications.",
+                url:  "https://sqlmap.org/",
+            }
+        ]
+    },
+    /* ── 3. Exploitation Frameworks ──────────────────────── */
+    {
+        name: "Exploitation Frameworks",
+        icon: "fa-crosshairs",
+        color: "#f87171",
+        tools: [
+            {
+                name: "Metasploit",
+                icon: "fa-terminal",
+                tag:  "Exploitation",
+                desc: "World's most used penetration testing framework for developing, testing, and executing sophisticated exploits against remote targets.",
+                url:  "https://www.metasploit.com/",
+            }
+        ]
+    },
+    /* ── 4. SIEM & Analytics ─────────────────────────────── */
+    {
+        name: "SIEM & Analytics",
+        icon: "fa-chart-bar",
+        color: "#34d399",
+        tools: [
+            {
+                name: "Splunk",
+                icon: "fa-chart-line",
+                tag:  "SIEM",
+                desc: "Enterprise-grade data-driven SIEM platform for searching, monitoring, and analyzing machine-generated data at any scale.",
+                url:  "https://www.splunk.com/",
+            },
+            {
+                name: "Elastic Stack (ELK)",
+                icon: "fa-layer-group",
+                tag:  "Log Analytics",
+                desc: "Open-source suite of Elasticsearch, Logstash, and Kibana for centralized log management, threat hunting, and security analytics.",
+                url:  "https://www.elastic.co/",
+            },
+            {
+                name: "Security Onion",
+                icon: "fa-eye",
+                tag:  "NSM Platform",
+                desc: "Free Linux distribution for network security monitoring, intrusion detection, log management, and enterprise-level threat hunting.",
+                url:  "https://securityonion.net/",
+            }
+        ]
+    },
+    /* ── 5. Password Cracking ────────────────────────────── */
+    {
+        name: "Password Cracking",
+        icon: "fa-key",
+        color: "#fbbf24",
+        tools: [
+            {
+                name: "John the Ripper",
+                icon: "fa-unlock-keyhole",
+                tag:  "Password Audit",
+                desc: "Fast and flexible open-source password security auditing and recovery tool supporting hundreds of password hash and cipher types.",
+                url:  "https://www.openwall.com/john/",
+            }
+        ]
+    },
+    /* ── 6. Reverse Engineering ──────────────────────────── */
+    {
+        name: "Reverse Engineering",
+        icon: "fa-microchip",
+        color: "#fb923c",
+        tools: [
+            {
+                name: "Ghidra",
+                icon: "fa-code",
+                tag:  "Reverse Engineering",
+                desc: "Free and open-source software reverse engineering suite developed by the NSA, supporting a wide range of processor architectures.",
+                url:  "https://ghidra-sre.org/",
+            }
+        ]
+    },
+    /* ── 7. Vulnerability Assessment ────────────────────── */
+    {
+        name: "Vulnerability Assessment",
+        icon: "fa-magnifying-glass",
+        color: "#e879f9",
+        tools: [
+            {
+                name: "Tenable Nessus",
+                icon: "fa-stethoscope",
+                tag:  "Vuln Scanner",
+                desc: "Industry-leading vulnerability assessment scanner trusted worldwide to identify, prioritize, and help remediate security weaknesses.",
+                url:  "https://www.tenable.com/products/nessus",
+            },
+            {
+                name: "OpenVAS",
+                icon: "fa-shield-virus",
+                tag:  "Open Source",
+                desc: "Comprehensive open-source vulnerability scanning and management framework maintained under the Greenbone Vulnerability Management umbrella.",
+                url:  "https://www.greenbone.net/en/",
+            }
+        ]
+    },
+    /* ── 8. Penetration Testing Distributions ───────────── */
+    {
+        name: "Penetration Testing Distributions",
+        icon: "fa-laptop-code",
+        color: "#2dd4bf",
+        tools: [
+            {
+                name: "Kali Linux",
+                icon: "fa-dragon",
+                tag:  "Linux Distro",
+                desc: "Debian-based Linux distribution purpose-built for digital forensics and penetration testing, pre-installed with 600+ security tools.",
+                url:  "https://www.kali.org/",
+            }
+        ]
+    },
+    /* ── 9. Password Cracking & Brute Force ─────────────── */
+    {
+        name: "Password Cracking & Brute Force",
+        icon: "fa-key",
+        color: "#f59e0b",
+        tools: [
+            {
+                name: "Hashcat",
+                icon: "fa-bolt",
+                tag:  "Hash Cracker",
+                desc: "World's fastest and most advanced password recovery utility, supporting over 300 hash types via CPU and GPU acceleration.",
+                url:  "https://hashcat.net/hashcat/",
+            },
+            {
+                name: "Hydra",
+                icon: "fa-lock",
+                tag:  "Brute Force",
+                desc: "Fast and flexible online password-cracking tool supporting numerous protocols including SSH, FTP, HTTP, SMB, and more.",
+                url:  "https://github.com/vanhauser-thc/thc-hydra",
+            }
+        ]
+    },
+    /* ── 10. Wireless & Network Recon ───────────────────── */
+    {
+        name: "Wireless & Network Recon",
+        icon: "fa-wifi",
+        color: "#22d3ee",
+        tools: [
+            {
+                name: "Aircrack-ng",
+                icon: "fa-wifi",
+                tag:  "WiFi Audit",
+                desc: "Complete suite of tools for auditing wireless network security, including packet capture, WEP/WPA/WPA2 cracking, and replay attacks.",
+                url:  "https://www.aircrack-ng.org/",
+            },
+            {
+                name: "Netcat",
+                icon: "fa-network-wired",
+                tag:  "Net Utility",
+                desc: "Versatile networking utility for reading and writing data across TCP/UDP connections, often called the 'Swiss Army knife' of networking.",
+                url:  "https://nmap.org/ncat/",
+            },
+            {
+                name: "Shodan",
+                icon: "fa-satellite-dish",
+                tag:  "IoT Search",
+                desc: "Search engine for internet-connected devices that lets security professionals discover exposed services, open ports, and vulnerable systems worldwide.",
+                url:  "https://www.shodan.io/",
+            }
+        ]
+    },
+    /* ── 11. OSINT & Reconnaissance ─────────────────────── */
+    {
+        name: "OSINT & Reconnaissance",
+        icon: "fa-magnifying-glass",
+        color: "#818cf8",
+        tools: [
+            {
+                name: "theHarvester",
+                icon: "fa-seedling",
+                tag:  "Info Gather",
+                desc: "Passive reconnaissance tool for gathering emails, subdomains, hosts, employee names, and open ports from public sources and search engines.",
+                url:  "https://github.com/laramies/theHarvester",
+            },
+            {
+                name: "Maltego",
+                icon: "fa-diagram-project",
+                tag:  "Link Analysis",
+                desc: "Interactive data mining and link-analysis tool that visualizes relationships between people, domains, IPs, organizations, and other entities for OSINT investigations.",
+                url:  "https://www.maltego.com/",
+            }
+        ]
+    },
+    /* ── 12. Digital Forensics & Memory Analysis ─────────── */
+    {
+        name: "Digital Forensics & Memory Analysis",
+        icon: "fa-microscope",
+        color: "#10b981",
+        tools: [
+            {
+                name: "Autopsy",
+                icon: "fa-folder-open",
+                tag:  "Disk Forensics",
+                desc: "Open-source digital forensics platform and graphical front-end to The Sleuth Kit, used by law enforcement and investigators to analyze disk images and recover evidence.",
+                url:  "https://www.autopsy.com/",
+            },
+            {
+                name: "Volatility",
+                icon: "fa-memory",
+                tag:  "Memory Analysis",
+                desc: "Advanced open-source framework for volatile memory forensics, enabling extraction of digital artifacts such as processes, network connections, and registry hives from RAM dumps.",
+                url:  "https://volatilityfoundation.org/",
+            }
+        ]
+    },
+    /* ── 13. Advanced Reverse Engineering ───────────────── */
+    {
+        name: "Advanced Reverse Engineering",
+        icon: "fa-microchip",
+        color: "#f97316",
+        tools: [
+            {
+                name: "x64dbg",
+                icon: "fa-bug",
+                tag:  "Debugger",
+                desc: "Open-source x64/x32 debugger for Windows designed for malware analysis and reverse engineering, featuring a clean interface and extensive plugin support.",
+                url:  "https://x64dbg.com/",
+            },
+            {
+                name: "Binary Ninja",
+                icon: "fa-code",
+                tag:  "Disassembler",
+                desc: "Commercial interactive disassembler and decompiler built for reverse engineers, offering a programmable API, IL lifting, and collaborative analysis features.",
+                url:  "https://binary.ninja/",
+            }
+        ]
+    },
+    /* ── 14. Web Discovery & Fuzzing ────────────────────── */
+    {
+        name: "Web Discovery & Fuzzing",
+        icon: "fa-spider",
+        color: "#c084fc",
+        tools: [
+            {
+                name: "Nikto",
+                icon: "fa-globe",
+                tag:  "Web Scanner",
+                desc: "Open-source web server scanner that performs comprehensive tests for dangerous files, outdated software versions, and common misconfigurations across thousands of checks.",
+                url:  "https://cirt.net/Nikto2",
+            },
+            {
+                name: "Gobuster",
+                icon: "fa-shuffle",
+                tag:  "Dir Brute",
+                desc: "Fast directory, DNS, and VHost brute-forcing tool written in Go, designed to enumerate hidden paths and subdomains on web servers.",
+                url:  "https://github.com/OJ/gobuster",
+            },
+            {
+                name: "ffuf",
+                icon: "fa-arrows-rotate",
+                tag:  "Web Fuzzer",
+                desc: "High-speed web fuzzer written in Go for discovering hidden files, directories, parameters, and subdomains via customizable wordlist-based fuzzing.",
+                url:  "https://github.com/ffuf/ffuf",
+            }
+        ]
+    },
+    /* ── 15. Red Team & Post-Exploitation ───────────────── */
+    {
+        name: "Red Team & Post-Exploitation",
+        icon: "fa-skull-crossbones",
+        color: "#fb7185",
+        tools: [
+            {
+                name: "Impacket",
+                icon: "fa-box-open",
+                tag:  "Protocol Toolkit",
+                desc: "Collection of Python classes for working with network protocols, widely used in red team operations for SMB, Kerberos, MSRPC, and other Windows-protocol attacks.",
+                url:  "https://github.com/fortra/impacket",
+            },
+            {
+                name: "Evil-WinRM",
+                icon: "fa-terminal",
+                tag:  "WinRM Shell",
+                desc: "Full-featured WinRM shell designed for post-exploitation on Windows targets, enabling remote command execution, file upload/download, and in-memory script loading.",
+                url:  "https://github.com/Hackplayers/evil-winrm",
+            }
+        ]
+    }
+];
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════ */
+function rgba(hex, a) {
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════════════════ */
+function render(data) {
+    const box = document.getElementById('container');
+    const nr  = document.getElementById('noResults');
+    box.innerHTML = '';
+
+    const visible = data.filter(c => c.tools.length > 0);
+
+    // Update header stats
+    document.getElementById('sTool').textContent = visible.reduce((s, c) => s + c.tools.length, 0);
+    document.getElementById('sCat').textContent  = visible.length;
+
+    if (!visible.length) {
+        nr.classList.add('show');
+        return;
+    }
+    nr.classList.remove('show');
+
+    visible.forEach((cat, ci) => {
+        const catDelay = ci * 55;
+        const sec = document.createElement('section');
+        sec.className = 'cat-sec';
+        sec.style.animationDelay = `${catDelay}ms`;
+
+        sec.innerHTML = `
+            <div class="cat-hdr">
+                <div class="cat-ico"
+                     style="background:${rgba(cat.color,.15)};color:${cat.color}">
+                    <i class="fas ${cat.icon}"></i>
+                </div>
+                <span class="cat-label">${cat.name}</span>
+                <div class="cat-line"></div>
+                <span class="cat-badge">${cat.tools.length} tool${cat.tools.length > 1 ? 's' : ''}</span>
+            </div>
+            <div class="tool-grid">
+                ${cat.tools.map((t, ti) => `
+                    <article class="tool-card"
+                             style="--c:${cat.color}; animation-delay:${catDelay + (ti + 1) * 55}ms">
+                        <div class="card-head">
+                            <div class="t-ico"
+                                 style="background:${rgba(cat.color,.14)};color:${cat.color}">
+                                <i class="fas ${t.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="t-name">${t.name}</div>
+                                <span class="t-tag"
+                                      style="color:${cat.color};background:${rgba(cat.color,.12)};border-color:${rgba(cat.color,.28)}">
+                                    ${t.tag}
+                                </span>
+                            </div>
+                        </div>
+                        <p class="t-desc">${t.desc}</p>
+                        <a class="t-link"
+                           href="${t.url}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-arrow-up-right-from-square"></i> Visit Website
+                        </a>
+                    </article>
+                `).join('')}
+            </div>`;
+
+        box.appendChild(sec);
+    });
+}
+
+/* ══════════════════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════════════════ */
+function doSearch(val) {
+    const q = val.toLowerCase().trim();
+    document.getElementById('clearBtn').style.display = q ? 'inline-flex' : 'none';
+
+    if (!q) { render(DATA); return; }
+
+    render(DATA.map(cat => ({
+        ...cat,
+        tools: cat.tools.filter(t =>
+            t.name.toLowerCase().includes(q) ||
+            cat.name.toLowerCase().includes(q) ||
+            t.desc.toLowerCase().includes(q) ||
+            t.tag.toLowerCase().includes(q)
+        )
+    })));
+}
+
+function clearSearch() {
+    const el = document.getElementById('searchInput');
+    el.value = '';
+    document.getElementById('clearBtn').style.display = 'none';
+    render(DATA);
+    el.focus();
+}
+
+/* ══════════════════════════════════════════════════════════
+   THEME
+══════════════════════════════════════════════════════════ */
+function toggleTheme() {
+    const root = document.documentElement;
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    document.getElementById('themeIco').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+    document.getElementById('themeLbl').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    localStorage.setItem('theme', next);
+}
+
+function applyStoredTheme() {
+    const saved = localStorage.getItem('theme');
+    if (!saved) return;
+    document.documentElement.setAttribute('data-theme', saved);
+    const isDark = saved === 'dark';
+    document.getElementById('themeIco').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('themeLbl').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+}
+
+/* ══════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════ */
+applyStoredTheme();
+render(DATA);
+</script>
+</body>
+</html>
