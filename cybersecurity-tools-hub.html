@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A curated directory of professional cybersecurity tools — network scanning, web app testing, exploitation, SIEM, forensics, and more, with official links only.">
+    <meta name="theme-color" content="#0d1117">
+    <meta property="og:title" content="Cyber Security Tools Hub">
+    <meta property="og:description" content="Your centralized gateway to the most powerful cybersecurity tools — official links, concise descriptions, clear categories.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Cyber Security Tools Hub">
+    <meta name="twitter:description" content="Your centralized gateway to the most powerful cybersecurity tools.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='20'%3E%F0%9F%9B%A1%EF%B8%8F%3C/text%3E%3C/svg%3E">
     <title>Cyber Security Tools Hub</title>
     <script>
         const t = localStorage.getItem('theme');
@@ -11,7 +20,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B"
+          crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         /* ── RESET & TOKENS ─────────────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -355,6 +366,7 @@
         <i class="fas fa-magnifying-glass s-ico"></i>
         <input id="searchInput" type="text"
                placeholder="Search by tool name, category, or keyword…"
+               aria-label="Search tools by name, category, or keyword"
                autocomplete="off" oninput="doSearch(this.value)">
         <button id="clearBtn" onclick="clearSearch()" title="Clear search">
             <i class="fas fa-xmark"></i>
@@ -484,9 +496,9 @@ const DATA = [
             }
         ]
     },
-    /* ── 5. Password Cracking ────────────────────────────── */
+    /* ── 5. Password Cracking & Brute Force ──────────────── */
     {
-        name: "Password Cracking",
+        name: "Password Cracking & Brute Force",
         icon: "fa-key",
         color: "#fbbf24",
         tools: [
@@ -496,6 +508,20 @@ const DATA = [
                 tag:  "Password Audit",
                 desc: "Fast and flexible open-source password security auditing and recovery tool supporting hundreds of password hash and cipher types.",
                 url:  "https://www.openwall.com/john/",
+            },
+            {
+                name: "Hashcat",
+                icon: "fa-bolt",
+                tag:  "Hash Cracker",
+                desc: "World's fastest and most advanced password recovery utility, supporting over 300 hash types via CPU and GPU acceleration.",
+                url:  "https://hashcat.net/hashcat/",
+            },
+            {
+                name: "Hydra",
+                icon: "fa-lock",
+                tag:  "Brute Force",
+                desc: "Fast and flexible online password-cracking tool supporting numerous protocols including SSH, FTP, HTTP, SMB, and more.",
+                url:  "https://github.com/vanhauser-thc/thc-hydra",
             }
         ]
     },
@@ -551,29 +577,7 @@ const DATA = [
             }
         ]
     },
-    /* ── 9. Password Cracking & Brute Force ─────────────── */
-    {
-        name: "Password Cracking & Brute Force",
-        icon: "fa-key",
-        color: "#f59e0b",
-        tools: [
-            {
-                name: "Hashcat",
-                icon: "fa-bolt",
-                tag:  "Hash Cracker",
-                desc: "World's fastest and most advanced password recovery utility, supporting over 300 hash types via CPU and GPU acceleration.",
-                url:  "https://hashcat.net/hashcat/",
-            },
-            {
-                name: "Hydra",
-                icon: "fa-lock",
-                tag:  "Brute Force",
-                desc: "Fast and flexible online password-cracking tool supporting numerous protocols including SSH, FTP, HTTP, SMB, and more.",
-                url:  "https://github.com/vanhauser-thc/thc-hydra",
-            }
-        ]
-    },
-    /* ── 10. Wireless & Network Recon ───────────────────── */
+    /* ── 9. Wireless & Network Recon ─────────────────────── */
     {
         name: "Wireless & Network Recon",
         icon: "fa-wifi",
@@ -602,10 +606,10 @@ const DATA = [
             }
         ]
     },
-    /* ── 11. OSINT & Reconnaissance ─────────────────────── */
+    /* ── 10. OSINT & Reconnaissance ──────────────────────── */
     {
         name: "OSINT & Reconnaissance",
-        icon: "fa-magnifying-glass",
+        icon: "fa-user-secret",
         color: "#818cf8",
         tools: [
             {
@@ -624,7 +628,7 @@ const DATA = [
             }
         ]
     },
-    /* ── 12. Digital Forensics & Memory Analysis ─────────── */
+    /* ── 11. Digital Forensics & Memory Analysis ─────────── */
     {
         name: "Digital Forensics & Memory Analysis",
         icon: "fa-microscope",
@@ -646,7 +650,7 @@ const DATA = [
             }
         ]
     },
-    /* ── 13. Advanced Reverse Engineering ───────────────── */
+    /* ── 12. Advanced Reverse Engineering ───────────────── */
     {
         name: "Advanced Reverse Engineering",
         icon: "fa-microchip",
@@ -668,7 +672,7 @@ const DATA = [
             }
         ]
     },
-    /* ── 14. Web Discovery & Fuzzing ────────────────────── */
+    /* ── 13. Web Discovery & Fuzzing ─────────────────────── */
     {
         name: "Web Discovery & Fuzzing",
         icon: "fa-spider",
@@ -697,7 +701,7 @@ const DATA = [
             }
         ]
     },
-    /* ── 15. Red Team & Post-Exploitation ───────────────── */
+    /* ── 14. Red Team & Post-Exploitation ────────────────── */
     {
         name: "Red Team & Post-Exploitation",
         icon: "fa-skull-crossbones",
@@ -810,12 +814,7 @@ function doSearch(val) {
 
     render(DATA.map(cat => ({
         ...cat,
-        tools: cat.tools.filter(t =>
-            t.name.toLowerCase().includes(q) ||
-            cat.name.toLowerCase().includes(q) ||
-            t.desc.toLowerCase().includes(q) ||
-            t.tag.toLowerCase().includes(q)
-        )
+        tools: cat.tools.filter(t => t.name.toLowerCase().startsWith(q))
     })));
 }
 
