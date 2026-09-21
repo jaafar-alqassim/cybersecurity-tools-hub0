@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A curated directory of professional cybersecurity tools — network scanning, web app testing, exploitation, SIEM, forensics, and more, with official links only.">
+    <meta name="theme-color" content="#0d1117">
+    <meta property="og:title" content="Cyber Security Tools Hub">
+    <meta property="og:description" content="Your centralized gateway to the most powerful cybersecurity tools — official links, concise descriptions, clear categories.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Cyber Security Tools Hub">
+    <meta name="twitter:description" content="Your centralized gateway to the most powerful cybersecurity tools.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Cyber Security Tools Hub</title>
+    <script>
+        // Set the theme before first paint to avoid a flash of the wrong theme.
+        (function () {
+            var saved;
+            try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+            var theme = saved
+                || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.style.colorScheme = theme;
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B"
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
